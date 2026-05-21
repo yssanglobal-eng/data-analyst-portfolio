@@ -1,39 +1,65 @@
-# Data Analytics Portfolio — Yssang
+# 📊 Data Analytics Portfolio
 
-Analista de datos con enfoque en negocio y contexto real de producto.
-Construí y opero ClinicAssist, un SaaS para clínicas dentales en México,
-lo que me da una perspectiva poco común: entiendo los datos porque
-entiendo el negocio que los genera.
+**Analyst focused on real business data, not tutorial datasets.**
 
-## Stack
-SQL (PostgreSQL) · Python (pandas, matplotlib) · Power BI
-
-## Proyectos
-
-### 🦷 Análisis Operacional — ClinicAssist
-> ¿Qué tratamientos generan más ingresos? ¿Qué clínicas tienen más retención?
-
-Análisis completo sobre base de datos real de un SaaS activo.
-Queries SQL con JOINs complejos + dashboard en Power BI.
-
-`SQL` `PostgreSQL` `Power BI`
+Soy analista de datos con contexto real de producto: construí y opero
+**ClinicAssist**, un SaaS activo para clínicas dentales en México.
+Eso significa que no solo sé consultar datos — entiendo el negocio que los genera.
 
 ---
 
-### 🐍 EDA — Comportamiento de pacientes dentales
-> Limpieza, exploración y visualización con Python sobre datos clínicos reales.
-
-Jupyter Notebook con pandas, análisis de distribuciones,
-tendencias por tratamiento y segmentación por clínica.
-
-`Python` `pandas` `matplotlib` `Jupyter`
+## 🛠️ Stack
+| Tool | Level |
+|------|-------|
+| SQL (PostgreSQL) | ⭐⭐⭐⭐ |
+| Python (pandas, matplotlib) | ⭐⭐⭐ |
+| Power BI | ⭐⭐⭐ |
+| Excel / Google Sheets | ⭐⭐⭐ |
 
 ---
 
-## Sobre mí
-Ingeniero industrial reconvertido al mundo de datos.
+## 📁 Projects
+
+### 🦷 01 — Operational Analysis: ClinicAssist (SQL)
+**Question:** Which treatments generate the most revenue?
+Which clinics have the best patient retention?
+
+- Real database from an active SaaS product
+- Complex JOINs, GROUP BY, window functions
+- Business insights documented in Spanish
+
+`PostgreSQL` `DBeaver` `SQL`
+
+---
+
+### 🐍 02 — Patient Behavior EDA (Python)
+**Question:** What patterns exist in dental appointments and treatments?
+
+- Data cleaning with pandas
+- Distribution analysis and trends by treatment type
+- Visualizations with matplotlib/seaborn
+
+`Python` `pandas` `matplotlib` `Jupyter Notebook`
+
+---
+
+### 📈 03 — Clinic Performance Dashboard (Power BI)
+**Question:** How are clinics performing across cities?
+
+- KPI dashboard: revenue, appointments, retention
+- Filters by city, clinic and subscription plan
+- Exportable PDF report
+
+`Power BI` `DAX`
+
+---
+
+## 👤 About me
+
+Ingeniero industrial | SaaS founder | Data analyst en formación.
+
 Creo que el mejor analista no es el que sabe más SQL,
-sino el que entiende qué pregunta hacerle a los datos.
+sino el que sabe qué preguntarle a los datos.
 
-📍 Culiacán, Sinaloa · Disponible remoto
+📍 Culiacán, Sinaloa — Open to remote work worldwide
 📬 [LinkedIn](#) · [ClinicAssist](#)
