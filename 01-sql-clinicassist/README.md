@@ -40,7 +40,9 @@ La base de datos incluye clínicas, pacientes, dentistas, citas y tratamientos.
 
 ---
 
-## 🛠 Tecnologías
+## 🛠 Tecnologías 
+
+📄 [Ver queries SQL](./queries.sql)
 
 - **PostgreSQL** — motor de base de datos
 - **DBeaver** — cliente SQL
