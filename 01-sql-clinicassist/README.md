@@ -1,58 +1,58 @@
-# 🦷 Análisis Operacional — ClinicAssist
+# 🦷 Operational Analysis — ClinicAssist
 
-Análisis de datos reales de **ClinicAssist**, un SaaS activo que gestiona clínicas dentales en México.  
-El objetivo es responder preguntas clave de negocio sobre ingresos, demanda y desempeño operativo.
+Analysis of real data from **ClinicAssist**, a live SaaS managing dental clinics across Mexico.  
+The goal is to answer key business questions about revenue, demand, and operational performance.
 
 ---
 
-## 🗂 Contexto
+## 🗂 Context
 
-ClinicAssist opera **15 clínicas dentales** en 8 estados de México.  
-La base de datos incluye clínicas, pacientes, dentistas, citas y tratamientos.
+ClinicAssist operates **15 dental clinics** across 8 states in Mexico.  
+The database includes clinics, patients, dentists, appointments, and treatments.
 
-| Tabla | Registros |
+| Table | Records |
 |---|---|
-| Clínicas | 15 |
-| Pacientes | 30 |
-| Citas | 77 |
-| Tratamientos | 47 |
+| Clinics | 15 |
+| Patients | 30 |
+| Appointments | 77 |
+| Treatments | 47 |
 
 ---
 
-## ❓ Preguntas de negocio
+## ❓ Business Questions
 
-1. ¿Qué tratamientos generan más ingresos?
-2. ¿Cuál es el ticket promedio por tipo de servicio?
-3. ¿Qué ciudad tiene el mercado más rentable?
-4. ¿Qué dentista tiene mayor carga de trabajo?
-5. ¿En qué mes hay más actividad?
-6. ¿Qué clínica tiene más pacientes?
-
----
-
-## 📊 Hallazgos clave
-
-- **Endodoncia** genera el 43% del ingreso total ($40,500) con solo algunos procedimientos
-- Una endodoncia vale **6.7x más** que una limpieza en ticket promedio
-- **Monterrey** es el mercado más rentable por ticket promedio ($2,320)
-- El **primer trimestre** (Ene–Mar) concentra la mayor demanda del año
-- CDMX y Monterrey empatan como las clínicas con más pacientes (9 c/u)
+1. Which treatments generate the most revenue?
+2. What is the average ticket per service type?
+3. Which city has the most profitable market?
+4. Which dentist has the highest workload?
+5. Which month has the most activity?
+6. Which clinic has the most patients?
 
 ---
 
-## 🛠 Tecnologías 
+## 📊 Key Findings
 
-📄 [Ver queries SQL](./queries.sql)
-
-- **PostgreSQL** — motor de base de datos
-- **DBeaver** — cliente SQL
-- **Git + GitHub** — control de versiones
+- **Endodontics** generates 43% of total revenue ($40,500 MXN) despite being a low-volume procedure
+- An endodontic treatment is worth **6.7x more** than a cleaning in average ticket
+- **Monterrey** is the most profitable market by average ticket ($2,320 MXN)
+- **Q1 (Jan–Mar)** concentrates the highest patient demand of the year
+- CDMX and Monterrey tie as the clinics with the most patients (9 each)
 
 ---
 
-## ▶️ Cómo ejecutar
+## 🛠 Tech Stack
 
-1. Clona el repositorio
-2. Conéctate a una instancia de PostgreSQL con el esquema de ClinicAssist
-3. Abre `queries.sql` en DBeaver o cualquier cliente SQL
-4. Ejecuta cada query de forma individual
+- **PostgreSQL** — database engine
+- **DBeaver** — SQL client
+- **Git + GitHub** — version control
+
+📄 [View SQL queries](./queries.sql)
+
+---
+
+## ▶️ How to Run
+
+1. Clone the repository
+2. Connect to a PostgreSQL instance with the ClinicAssist schema
+3. Open `queries.sql` in DBeaver or any SQL client
+4. Execute each query individually
