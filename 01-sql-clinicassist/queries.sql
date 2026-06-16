@@ -106,3 +106,33 @@ FROM clinicas
 JOIN pacientes ON clinicas.clinic_id = pacientes.clinic_id
 GROUP BY clinicas.nombre
 ORDER BY total_pacientes DESC;
+
+-- Agregaciones — práctica sobre el esquema de ClinicAssist
+
+-- 1. Conteo de citas por estado, de mayor a menor
+SELECT status, COUNT(*) AS total_citas
+FROM appointments
+GROUP BY status
+ORDER BY total_citas DESC;
+
+-- 2. Conteo de citas por estado, filtrado a una clínica
+SELECT status, COUNT(*) AS total_citas
+FROM appointments
+WHERE clinic_id = 1
+GROUP BY status
+ORDER BY total_citas DESC;
+
+-- 3. Estados con más de 10 citas en la clínica 1
+SELECT status, COUNT(*) AS total_citas
+FROM appointments
+WHERE clinic_id = 1
+GROUP BY status
+HAVING COUNT(*) > 10
+ORDER BY total_citas DESC;
+
+-- 4. Número de citas por paciente en la clínica 1
+SELECT patient_id, COUNT(*) AS total_citas
+FROM appointments
+WHERE clinic_id = 1
+GROUP BY patient_id
+ORDER BY total_citas DESC;
