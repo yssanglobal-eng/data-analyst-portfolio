@@ -1,171 +1,44 @@
 # 03 · Dashboard Power BI — Olist E-Commerce
 
-> Dashboard interactivo construido sobre el dataset público de Olist (e-commerce brasileño), conectado directamente a PostgreSQL. El objetivo es transformar el análisis exploratorio SQL previo (ver [`02-sql-olist`](../02-sql-olist)) en un modelo de datos y medidas DAX reutilizables para reportería de negocio.
+> Dashboard interactivo construido sobre el dataset público de Olist (e-commerce brasileño), conectado directamente a PostgreSQL.
 
----
+## Stack
+Power BI Desktop · PostgreSQL (conexión directa, modo Import) · DAX
 
-## ES Español
+## Modelo de datos
+- 6 tablas cargadas: `olist_customers`, `olist_order_items`, `olist_order_payments`, `olist_orders`, `olist_products`, `product_category_name_translation`
+- Tabla `Calendario` generada con DAX (`ADDCOLUMNS` + `CALENDAR`), marcada como tabla de fechas
+- Columna calculada `FechaCompra` para resolver desajuste timestamp/date entre `Calendario` y `olist_orders`
 
-### Conexión y modelo de datos
+## Medidas DAX
 
-- Conexión directa a PostgreSQL (DirectQuery/Import según configuración)
-- 6 tablas cargadas: `orders`, `order_items`, `order_payments`, `customers`, `products`, `product_category_name_translation`
-- Relaciones verificadas entre tablas siguiendo el esquema relacional del dataset original
-- Tabla `Calendario` generada con DAX (`CALENDAR` + columnas de Año, Mes, Trimestre, Día de la semana) y marcada como **tabla de fechas oficial** para habilitar funciones de time intelligence
-- Corrección de tipo de dato: columna de timestamp de `orders` convertida a fecha pura mediante columna calculada, para evitar conflictos de granularidad en las relaciones
+| Medida | Lógica | Propósito |
+|---|---|---|
+| `Total Pedidos` | `COUNTROWS('public olist_orders')` | Conteo total de órdenes |
+| `Pedidos Entregados` | `CALCULATE(..., order_status = "delivered")` | Órdenes completadas |
+| `Pedidos Año Anterior` | `SAMEPERIODLASTYEAR(Calendario[Date])` | Comparación YoY |
+| `% Crecimiento YoY` | `DIVIDE(Total Pedidos - Pedidos Año Anterior, Pedidos Año Anterior)` | Tasa de crecimiento |
+| `Ingresos por Producto` | `SUM('public olist_order_items'[price])` | Ingresos a nivel producto (resuelve limitación de `payment_value`, que vive a nivel orden y no se puede desagregar por categoría) |
+| `Tiempo Real de Entrega (días)` | `AVERAGEX(FILTER(delivered), DATEDIFF(purchase, delivered_customer_date, DAY))` | Días reales de entrega |
+| `Tiempo Estimado de Entrega (días)` | `AVERAGEX(FILTER(delivered), DATEDIFF(purchase, estimated_delivery_date, DAY))` | Promesa de entrega |
 
-### Medidas DAX
+## Visuales del dashboard
 
-**Total Pedidos**
-```dax
-Total Pedidos = COUNTROWS('public olist_orders')
-```
-Conteo base de filas de la tabla de órdenes. Equivalente a `COUNT(*)` en SQL.
+1. **KPIs generales** — Total de pedidos, pedidos entregados, pedidos año anterior
+2. **Recuento de órdenes por año** — gráfica de columnas
+3. **Ingresos por Categoría de Producto** — barras horizontales, Top 10
+4. **Tabla comparativa YoY** — Año, Total Pedidos, Pedidos Año Anterior, % Crecimiento, Ingresos Totales
+5. **Tiempo de Entrega: Real vs. Estimado** — columnas agrupadas por año
+6. **Ingresos por Método de Pago** — gráfica de dona
 
-**Pedidos Entregados**
-```dax
-Pedidos Entregados = CALCULATE(
-    COUNTROWS('public olist_orders'),
-    'public olist_orders'[order_status] = "delivered"
-)
-```
-Usa `CALCULATE` para modificar el contexto de filtro y contar solo pedidos con estatus "delivered".
+## Hallazgos clave
 
-**Pedidos Año Anterior**
-```dax
-Pedidos Año Anterior = CALCULATE(
-    [Total Pedidos],
-    SAMEPERIODLASTYEAR(Calendario[Date])
-)
-```
-Función de time intelligence que retrocede un año exacto sobre la tabla Calendario. Requiere que `Calendario` esté marcada como tabla de fechas.
+- **Concentración de ingresos:** las categorías `health_beauty`, `watches_gifts` y `bed_bath_table` lideran los ingresos por producto, muy por encima del resto del Top 10.
+- **Crecimiento sostenido:** los pedidos crecieron 118.89% acumulado entre 2016 y 2018, con una aceleración fuerte en 2017 (+13,608% vs. 2016, año con muestra pequeña).
+- **Cumplimiento de entrega:** el tiempo real de entrega se mantiene consistentemente por debajo del tiempo estimado en los tres años — Olist entrega, en promedio, más rápido de lo que promete a sus clientes.
+- **Dependencia de tarjeta de crédito:** el 78.3% de los ingresos se concentra en pagos con tarjeta de crédito, frente a 17.9% en boleto y menos del 4% en el resto de los métodos combinados — una posible señal de riesgo de concentración en un solo medio de pago.
 
-**% Crecimiento YoY**
-```dax
-% Crecimiento YoY = 
-DIVIDE(
-    [Total Pedidos] - [Pedidos Año Anterior],
-    [Pedidos Año Anterior]
-)
-```
-`DIVIDE()` maneja automáticamente los casos donde el denominador es blank o cero (ej. el primer año del dataset, sin año anterior), evitando errores de división.
+## Próximos pasos
 
-**Ingresos Totales**
-```dax
-Ingresos Totales = SUM('public olist_order_payments'[payment_value])
-```
-Suma directa sobre la tabla de pagos.
-
-### Resultados (checkpoint de validación)
-
-| Año | Total Pedidos | Pedidos Año Anterior | % Crecimiento YoY | Ingresos Totales |
-|---|---|---|---|---|
-| 2016 | 329 | — | — | $59,362.34 |
-| 2017 | 45,101 | 329 | 13,608.51% | $7,249,746.73 |
-| 2018 | 54,011 | 45,101 | 19.76% | $8,699,763.05 |
-| **Total** | **99,441** | 45,430 | 118.89% | **$16,008,872.12** |
-
-El crecimiento de 2017 se ve desproporcionado porque 2016 fue prácticamente un año piloto para la plataforma (base muy pequeña). El dato relevante para análisis de negocio maduro es el crecimiento de 2018 (**19.76%**), que refleja una operación ya establecida.
-
-### Visuales
-
-![Dashboard overview](./dashboard-overview.png)
-
-- Gráfico de barras: pedidos totales por año
-- Tarjetas KPI: Total Pedidos, Pedidos Entregados, Pedidos Año Anterior
-- Tabla comparativa: Año / Total Pedidos / Pedidos Año Anterior / % Crecimiento YoY / Ingresos Totales
-
-### Próximos pasos
-
-- Medidas adicionales: ticket promedio, tiempo de entrega real vs. estimado
-- Visuales de geografía (ventas por estado), top categorías de producto, tendencia mensual
-- Formato y tema visual consistente
-- Segunda página: resumen ejecutivo vs. vista de detalle
-
-### Stack
-
-`PostgreSQL` · `Power BI Desktop` · `DAX`
-
----
-
-## EN English
-
-### Connection and data model
-
-- Direct connection to PostgreSQL
-- 6 tables loaded: `orders`, `order_items`, `order_payments`, `customers`, `products`, `product_category_name_translation`
-- Relationships verified following the dataset's relational schema
-- `Calendario` (Calendar) table built with DAX (`CALENDAR` + Year, Month, Quarter, Weekday columns) and marked as the **official date table** to enable time intelligence functions
-- Data type fix: `orders` timestamp column converted to a pure date via calculated column, to avoid granularity conflicts in relationships
-
-### DAX Measures
-
-**Total Orders**
-```dax
-Total Pedidos = COUNTROWS('public olist_orders')
-```
-Base row count of the orders table. Equivalent to `COUNT(*)` in SQL.
-
-**Delivered Orders**
-```dax
-Pedidos Entregados = CALCULATE(
-    COUNTROWS('public olist_orders'),
-    'public olist_orders'[order_status] = "delivered"
-)
-```
-Uses `CALCULATE` to modify the filter context and count only orders with "delivered" status.
-
-**Prior Year Orders**
-```dax
-Pedidos Año Anterior = CALCULATE(
-    [Total Pedidos],
-    SAMEPERIODLASTYEAR(Calendario[Date])
-)
-```
-Time intelligence function that shifts one exact year back over the Calendar table. Requires `Calendario` to be marked as a date table.
-
-**YoY % Growth**
-```dax
-% Crecimiento YoY = 
-DIVIDE(
-    [Total Pedidos] - [Pedidos Año Anterior],
-    [Pedidos Año Anterior]
-)
-```
-`DIVIDE()` automatically handles blank/zero denominators (e.g. the dataset's first year, with no prior year), avoiding division errors.
-
-**Total Revenue**
-```dax
-Ingresos Totales = SUM('public olist_order_payments'[payment_value])
-```
-Direct sum over the payments table.
-
-### Validation Results
-
-| Year | Total Orders | Prior Year Orders | YoY % Growth | Total Revenue |
-|---|---|---|---|---|
-| 2016 | 329 | — | — | $59,362.34 |
-| 2017 | 45,101 | 329 | 13,608.51% | $7,249,746.73 |
-| 2018 | 54,011 | 45,101 | 19.76% | $8,699,763.05 |
-| **Total** | **99,441** | 45,430 | 118.89% | **$16,008,872.12** |
-
-2017's growth looks disproportionate because 2016 was essentially a pilot year for the platform (very small base). The relevant figure for mature-business analysis is 2018's growth (**19.76%**), reflecting an already-established operation.
-
-### Visuals
-
-![Dashboard overview](./dashboard-overview.png)
-
-- Bar chart: total orders by year
-- KPI cards: Total Orders, Delivered Orders, Prior Year Orders
-- Comparison table: Year / Total Orders / Prior Year Orders / YoY % Growth / Total Revenue
-
-### Next steps
-
-- Additional measures: average ticket, actual vs. estimated delivery time
-- Geography visuals (sales by state), top product categories, monthly trend
-- Consistent visual formatting and theme
-- Second page: executive summary vs. detail view
-
-### Stack
-
-`PostgreSQL` · `Power BI Desktop` · `DAX`
+- [ ] Formato visual: tema de color coherente, alineación a cuadrícula, encabezado del dashboard
+- [ ] Commit final con captura pulida
