@@ -1,5 +1,4 @@
 # 03 · Dashboard Power BI — Olist E-Commerce
-
 > Dashboard interactivo construido sobre el dataset público de Olist (e-commerce brasileño), conectado directamente a PostgreSQL.
 
 ## Stack
@@ -11,7 +10,6 @@ Power BI Desktop · PostgreSQL (conexión directa, modo Import) · DAX
 - Columna calculada `FechaCompra` para resolver desajuste timestamp/date entre `Calendario` y `olist_orders`
 
 ## Medidas DAX
-
 | Medida | Lógica | Propósito |
 |---|---|---|
 | `Total Pedidos` | `COUNTROWS('public olist_orders')` | Conteo total de órdenes |
@@ -22,23 +20,27 @@ Power BI Desktop · PostgreSQL (conexión directa, modo Import) · DAX
 | `Tiempo Real de Entrega (días)` | `AVERAGEX(FILTER(delivered), DATEDIFF(purchase, delivered_customer_date, DAY))` | Días reales de entrega |
 | `Tiempo Estimado de Entrega (días)` | `AVERAGEX(FILTER(delivered), DATEDIFF(purchase, estimated_delivery_date, DAY))` | Promesa de entrega |
 
-## Visuales del dashboard
+## Diseño visual
+- Tema de color personalizado (azul marino + verde teal) aplicado de forma consistente en todas las visualizaciones
+- Métodos de pago menores (voucher, debit_card, not_defined) agrupados en categoría "Otros" para mejorar la legibilidad del gráfico de pastel
+- Header con título y subtítulo para dar contexto inmediato al reporte
+- Tarjetas KPI con efecto de tarjeta flotante (sombra + bordes redondeados)
+- Visuales alineados a cuadrícula
 
-1. **KPIs generales** — Total de pedidos, pedidos entregados, pedidos año anterior
+## Visuales del dashboard
+1. **KPIs generales** — Total de pedidos, pedidos entregados, pedidos año anterior (formato tarjeta flotante)
 2. **Recuento de órdenes por año** — gráfica de columnas
 3. **Ingresos por Categoría de Producto** — barras horizontales, Top 10
 4. **Tabla comparativa YoY** — Año, Total Pedidos, Pedidos Año Anterior, % Crecimiento, Ingresos Totales
 5. **Tiempo de Entrega: Real vs. Estimado** — columnas agrupadas por año
-6. **Ingresos por Método de Pago** — gráfica de dona
+6. **Ingresos por Método de Pago** — gráfica de pastel (credit_card, boleto, Otros)
 
 ## Hallazgos clave
-
 - **Concentración de ingresos:** las categorías `health_beauty`, `watches_gifts` y `bed_bath_table` lideran los ingresos por producto, muy por encima del resto del Top 10.
 - **Crecimiento sostenido:** los pedidos crecieron 118.89% acumulado entre 2016 y 2018, con una aceleración fuerte en 2017 (+13,608% vs. 2016, año con muestra pequeña).
 - **Cumplimiento de entrega:** el tiempo real de entrega se mantiene consistentemente por debajo del tiempo estimado en los tres años — Olist entrega, en promedio, más rápido de lo que promete a sus clientes.
 - **Dependencia de tarjeta de crédito:** el 78.3% de los ingresos se concentra en pagos con tarjeta de crédito, frente a 17.9% en boleto y menos del 4% en el resto de los métodos combinados — una posible señal de riesgo de concentración en un solo medio de pago.
 
 ## Próximos pasos
-
-- [ ] Formato visual: tema de color coherente, alineación a cuadrícula, encabezado del dashboard
-- [ ] Commit final con captura pulida
+- [ ] Explorar página adicional con drill-down por categoría de producto
+- [ ] Evaluar publicación en Power BI Service para versión interactiva compartible
