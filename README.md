@@ -1,20 +1,38 @@
-# Data Analytics Portfolio
+# Data & Operations Analytics Portfolio
 
-Data analyst with a product background. I built ClinicAssist, a SaaS for dental clinics in Mexico — that gives me something most Jr analysts don't have: real business data from a live production system.
+Data Analyst with an Industrial Engineering background and hands-on experience in e-commerce operations and product development. 
 
-Previously worked as an Operations Analyst at Coppel (e-commerce), where I automated shipping report workflows in Excel, reducing delivery times and return rates.
+- **Production Data Experience:** Built and analyzed transactional database metrics for **ClinicAssist** (a live SaaS platform for medical/dental clinics).
+- **E-Commerce & Supply Chain:** Former Operations Analyst at **Coppel**, optimizing shipping workflows and inventory delivery tracking.
 
-## Stack
+---
 
-SQL · Power BI · Excel · Git
+## 🛠️ Tech Stack
 
-## Projects
+- **SQL:** PostgreSQL, Complex Joins, Aggregations, Window Functions, Data Modeling
+- **Visualization:** Power BI, DAX, Interactive Dashboards, KPI Tracking
+- **Tools:** Excel (Advanced), Git, GitHub
 
-* [01 — SQL Analysis: ClinicAssist](./01-sql-clinicassist/) — operational analysis using real data from a dental SaaS in production
-* 02 — Python EDA: patient behavior `coming soon`
-* 03 — Power BI Dashboard: clinic performance `coming soon`
+---
 
-## Contact
+## 📂 Projects
 
-📍 Culiacán, Sinaloa · Remote-first  
-🔗 [LinkedIn](https://www.linkedin.com/in/adrian-sanchez-63b22427a/)
+### [01 — SQL Analysis: ClinicAssist (SaaS Operations)](./01-sql-clinicassist)
+> **Focus:** Real Production Data · SQL · SaaS Operational Metrics  
+Exploratory data analysis on a live SaaS database. Analyzed appointment schedules, patient retention rates, and operational bottlenecks to extract actionable business insights for clinic management.
+
+### [02 — SQL Analysis: Olist E-Commerce (Logistics & Fulfillment)](./02-sql-olist)
+> **Focus:** E-Commerce · Supply Chain · Order SLA & Performance  
+Deep-dive analysis on +100k real e-commerce orders. Evaluated carrier delivery times, seller fulfillment SLAs, freight costs, and customer review scores to identify operational friction points.
+
+### [03 — Power BI Dashboard: E-Commerce Executive Overview](./03-powerbi-olist)
+> **Focus:** Power BI · DAX · Executive Dashboards · Data Storytelling  
+Interactive dashboard built on the Olist dataset. Designed key visual modules for Sales Revenue trends, Regional Delivery Performance, Order Status tracking, and Customer Satisfaction metrics.
+
+---
+
+## 📍 Contact & Links
+
+- **Location:** Culiacán, Sinaloa, Mexico (Open to Remote & Relocation)
+- **LinkedIn:** https://www.linkedin.com/in/adrian-sanchez-63b22427a/
+- **Email:** sanchezzadrian12@gmail.com
